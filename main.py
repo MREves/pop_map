@@ -32,7 +32,12 @@ pop_est_persons_syoa = 'build_data/pop_estimates/2020_persons_pop_lsoa_syoa.csv'
 #SHAPEFILES
 #lsoa level
 #shapefile_path_lsoa = 'build_data/shapefiles/LSOA_shapefiles/Lower_Layer_Super_Output_Areas_(December_2011)_Boundaries_Generalised_Clipped_(BGC)_EW_V3.shp'
-shapefile_path_lsoa = 'build_data/shapefiles/LSOA_shapefiles/LSOA_2021_EW_BFC_V8.shp'
+
+# <<< UNCOMMENT THE BELOW WHEN USING THE FULL SHAPEFILE AND NOT THE SUBSET (once resolved method for uploading large file to github)
+# get the full file from : https://geoportal.statistics.gov.uk/datasets/bb427d36197443959de8a1462c8f1c55_0/explore
+
+#shapefile_path_lsoa = 'build_data/shapefiles/LSOA_shapefiles/LSOA_2021_EW_BFC_V8.shp' 
+shapefile_path_lsoa = 'build_data/shapefiles/subset_lsoa_shapefiles/subset_lsoa_shapefiles.shp' 
 
 #UTLA level
 #shapefile_path_utla = 'build_data/shapefiles/UTLA_shapefiles\\Counties_and_Unitary_Authorities_(December_2021)_EN_BFC.shp'
@@ -67,6 +72,28 @@ with st.expander(label='Click for overview of data sources'):
 st.subheader('Set up parameters')
 
 
+#list nearby LA's to subset shapefile down to, reducing file size
+local_authorities = [
+    # South Yorkshire (Upper-tier)
+    "Barnsley",
+    "Doncaster",
+    "Rotherham",
+    "Sheffield",
+    
+    # East Midlands (Unitary or Upper-tier)
+    "Derbyshire",
+    "Leicestershire",
+    "Lincolnshire",
+    "North Northamptonshire", 
+    "West Northamptonshire",  
+    "Nottinghamshire",
+    "Rutland",  # Unitary
+    "Derby",  # Unitary
+    "Leicester",  # Unitary
+    "Nottingham"  # Unitary
+]
+
+
 col1, col2, col3 = st.columns(3)
 with col1:
     what_map = st.selectbox(
@@ -84,7 +111,8 @@ with col2:
         area_text = "Upper Tier or Unitary Authority/ies"
         filter_column = 'UTLA21NM'
         list_options = sorted(list(set(dict_files['lookups']['df_lsoa_to_utla'][filter_column])))
-        default_options = ['Derbyshire', 'Derby']
+        #default_options = ['Derbyshire', 'Derby']
+        default_options = local_authorities
 
     elif geography_level == 'District Authority or Place':
         area_text = "Place(s) or District Authority/ies"
@@ -193,6 +221,25 @@ merged_df = pd.merge(gdf_lsoa, joined_df_final, left_on='LSOA21CD', right_on='LS
 
 # Convert the merged DataFrame back to a GeoDataFrame
 filtered_gdf = gpd.GeoDataFrame(merged_df, geometry='geometry')
+
+
+#------------------------------
+#Section to subset the soure shapefile to meet file size requirements of github
+#------------------------------
+
+#list of OBJECTID values present in the filtered GeoDataframe
+#object_ids = filtered_gdf['GlobalID'].tolist() #older shapefile referred to the unique id as object id, appears changed in more recent file
+#subset_gdf_lsoa_las = gdf_lsoa[gdf_lsoa['GlobalID'].isin(object_ids)]
+
+#subset_shapefile_path = 'build_data/shapefiles/subset_lsoa_shapefiles'
+
+#save the subset GeoDataFrame as a new shapefile that will have a smaller file size and so come under the github upload threshold
+#subset_gdf_lsoa_las.to_file(subset_shapefile_path)
+
+#------------------------------
+#subset section ends
+#------------------------------
+
 
 try:
     # Render the plot in Streamlit
