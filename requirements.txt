@@ -1,5 +1,5 @@
 pandas == 2.2.1
-matplotlib-base == 3.8.3
+matplotlib
 geopandas == 0.14.3
 folium == 0.16.0
 altair  == 5.2.0
