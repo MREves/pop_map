@@ -37,7 +37,7 @@ pop_est_persons_syoa = 'build_data/pop_estimates/2020_persons_pop_lsoa_syoa.csv'
 # get the full file from : https://geoportal.statistics.gov.uk/datasets/bb427d36197443959de8a1462c8f1c55_0/explore
 
 #shapefile_path_lsoa = 'build_data/shapefiles/LSOA_shapefiles/LSOA_2021_EW_BFC_V8.shp' 
-shapefile_path_lsoa = 'build_data/shapefiles/subset_lsoa_shapefiles/subset_lsoa_shapefiles.shp' 
+shapefile_path_lsoa = 'build_data/subset_lsoa_shapefiles/subset_lsoa_shapefiles.shp' 
 
 #UTLA level
 #shapefile_path_utla = 'build_data/shapefiles/UTLA_shapefiles\\Counties_and_Unitary_Authorities_(December_2021)_EN_BFC.shp'
@@ -64,7 +64,7 @@ dict_files = map_func.create_data_files(
 #create shape file variable from dictionary
 gdf_lsoa = dict_files['shapefiles']['gdf_lsoa']
 
-st.title(':blue[Population Visialisation Resource]')
+st.title(':blue[Population Visualisation Resource]')
 st.subheader('Overview of data sources')
 with st.expander(label='Click for overview of data sources'):
     st.write('The data used in this app is all publicy availalbe from NOMIS web (population projections), ONS (population estimates by gender and single year of age), and Open Geography Portal (Shapefiles).')
@@ -82,15 +82,7 @@ local_authorities = [
     
     # East Midlands (Unitary or Upper-tier)
     "Derbyshire",
-    "Leicestershire",
-    "Lincolnshire",
-    "North Northamptonshire", 
-    "West Northamptonshire",  
-    "Nottinghamshire",
-    "Rutland",  # Unitary
-    "Derby",  # Unitary
-    "Leicester",  # Unitary
-    "Nottingham"  # Unitary
+    "Derby"
 ]
 
 
@@ -231,7 +223,7 @@ filtered_gdf = gpd.GeoDataFrame(merged_df, geometry='geometry')
 #object_ids = filtered_gdf['GlobalID'].tolist() #older shapefile referred to the unique id as object id, appears changed in more recent file
 #subset_gdf_lsoa_las = gdf_lsoa[gdf_lsoa['GlobalID'].isin(object_ids)]
 
-#subset_shapefile_path = 'build_data/shapefiles/subset_lsoa_shapefiles'
+#subset_shapefile_path = 'build_data/subset_lsoa_shapefiles'
 
 #save the subset GeoDataFrame as a new shapefile that will have a smaller file size and so come under the github upload threshold
 #subset_gdf_lsoa_las.to_file(subset_shapefile_path)
